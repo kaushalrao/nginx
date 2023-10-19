@@ -2,12 +2,12 @@
 
 container_name=local_nginx
 
-result=$( sudo docker images -q nginx )
+nginx_container_id=$( sudo docker images -q nginx )
 
-if [[ -n "$result" ]]; then
+if [[ -n "$nginx_container_id" ]]; then
 echo "image exists"
 sudo docker container rm -f $container_name
-sudo docker rmi -f result
+sudo docker rmi -f $nginx_container_id
 else
 echo "No such image"
 fi
@@ -17,7 +17,7 @@ sudo docker build -t nginx:latest .
 sudo docker images -q nginx
 
 echo "built docker images and proceeding to delete existing container"
-result1=$( sudo docker images -q nginx )
+nginx_image_id=$( sudo docker images -q nginx )
 
 if [[ $? -eq 0 ]]; then
 echo "Container exists"
@@ -28,5 +28,5 @@ echo "No such container"
 fi
 
 echo "Deploying the updated container"
-sudo docker run -d --name local_nginx -p 8082:80 $result1
+sudo docker run -d --name local_nginx -p 8082:80 $nginx_image_id
 echo "Deploying the container"
